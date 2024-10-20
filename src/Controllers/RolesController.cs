@@ -52,7 +52,7 @@ namespace book_archive.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Create([Bind("Id,Name")] UserRole role)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Role role)
         {
             if (ModelState.IsValid)
             {
