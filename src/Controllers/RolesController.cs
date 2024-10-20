@@ -3,6 +3,7 @@ using book_archive.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace book_archive.Controllers
 {
@@ -144,7 +145,7 @@ namespace book_archive.Controllers
         {
             if (_context.Roles == null)
             {
-                return Problem("Entity set 'BookArchiveDbContext.Roles' is null.");
+                return BadRequest("Entity set 'BookArchiveDbContext.Roles' is null.");
             }
 
             var role = await _context.Roles.FindAsync(id);

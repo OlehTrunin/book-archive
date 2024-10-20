@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace book_archive.Controllers
 {
@@ -48,7 +49,7 @@ namespace book_archive.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id");
+            ViewData["Role"] = new SelectList(_context.Roles, "Id", "Id");
             return View();
         }
 
@@ -65,7 +66,7 @@ namespace book_archive.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", user.Role);
+            ViewData["Role"] = new SelectList(_context.Roles, "Id", "Id", user.Role);
             return View(user);
         }
 
@@ -84,7 +85,7 @@ namespace book_archive.Controllers
                 return NotFound();
             }
 
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", user.RoleId);
+            ViewData["Role"] = new SelectList(_context.Roles, "Id", "Id", user.Role);
             return View(user);
         }
 
@@ -121,7 +122,7 @@ namespace book_archive.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", user.Role);
+            ViewData["Role"] = new SelectList(_context.Roles, "Id", "Id", user.Role);
             return View(user);
         }
 
@@ -153,7 +154,7 @@ namespace book_archive.Controllers
         {
             if (_context.Users == null)
             {
-                return Problem("Entity set 'BookArchiveDbContext.Users' is null.");
+                return BadRequest("Entity set 'BookArchiveDbContext.Users' is null.");
             }
 
             var user = await _context.Users.FindAsync(id);
