@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace book_archive
 {
-    public class BookarchiveDbContext : DbContext
+    public class BookArchiveDbContext : DbContext
     {
-        public BookArchiveDbContext(DbContextOptions<BookarchiveDbContext> options)
+        public BookArchiveDbContext(DbContextOptions<BookArchiveDbContext> options) : base(options)
         {
             
         }

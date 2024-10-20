@@ -15,11 +15,11 @@ namespace book_archive.Controllers
     public class AuthController : Controller
     {
         // TODO: import and use necessary packages to connect DB
-        private book_archiveDB db;
+        private BookArchiveDbContext _db;
 
-        public AuthController(book_archiveDB context)
+        public AuthController(BookArchiveDbContext context)
         {
-            db = context;
+            _db = context;
         }
 
         [HttpGet]
@@ -39,7 +39,7 @@ namespace book_archive.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users
+                User user = await _db.Users
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
@@ -66,15 +66,15 @@ namespace book_archive.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
                     user = new User { Email = model.Email, Password = model.Password };
-                    Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                    Role userRole = await _db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
                         user.Role = userRole;
-                    db.Users.Add(user);
-                    await db.SaveChangesAsync();
+                    _db.Users.Add(user);
+                    await _db.SaveChangesAsync();
                     await Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }

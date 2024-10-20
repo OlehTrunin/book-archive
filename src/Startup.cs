@@ -39,7 +39,7 @@ namespace book_archive
 
             services.AddMvc();
             
-            services.AddDbContext<BookarchiveDbContext>(
+            services.AddDbContext<BookArchiveDbContext>(
                 options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
         }
 

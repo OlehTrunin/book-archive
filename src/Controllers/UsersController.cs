@@ -9,9 +9,9 @@ namespace book_archive.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly book_archiveDB _context;
+        private readonly BookArchiveDbContext _context;
 
-        public UsersController(book_archiveDB context)
+        public UsersController(BookArchiveDbContext context)
         {
             _context = context;
         }
@@ -20,8 +20,8 @@ namespace book_archive.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
-            var book_archiveDB = _context.Users.Include(u => u.Role);
-            return View(await book_archiveDB.ToListAsync());
+            var BookArchiveDbContext = _context.Users.Include(u => u.Role);
+            return View(await BookArchiveDbContext.ToListAsync());
         }
 
 // GET: Users/Details/5
@@ -153,7 +153,7 @@ namespace book_archive.Controllers
         {
             if (_context.Users == null)
             {
-                return Problem("Entity set 'book_archiveDB.Users' is null.");
+                return Problem("Entity set 'BookArchiveDbContext.Users' is null.");
             }
 
             var user = await _context.Users.FindAsync(id);

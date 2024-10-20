@@ -8,9 +8,9 @@ namespace book_archive.Controllers
 {
     public class RolesController : Controller
     {
-        private readonly book_archiveDB _context;
+        private readonly BookArchiveDbContext _context;
 
-        public RolesController(book_archiveDB context)
+        public RolesController(BookArchiveDbContext context)
         {
             _context = context;
         }
@@ -144,7 +144,7 @@ namespace book_archive.Controllers
         {
             if (_context.Roles == null)
             {
-                return Problem("Entity set 'book_archiveDB.Roles' is null.");
+                return Problem("Entity set 'BookArchiveDbContext.Roles' is null.");
             }
 
             var role = await _context.Roles.FindAsync(id);
