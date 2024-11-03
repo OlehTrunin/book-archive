@@ -1,7 +1,17 @@
+using System.Collections.Immutable;
+using System.Data;
+using BookArchive;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Server=(localdb)\\mssqllocaldb"));
+});
 
 var app = builder.Build();
 
@@ -23,5 +33,16 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+    if (!dbContext.Database.CanConnect())
+    {
+        throw new NotImplementedException("Can't connect to database");
+    }
+}
 
 app.Run();
