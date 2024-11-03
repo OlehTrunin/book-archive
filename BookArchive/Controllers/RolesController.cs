@@ -1,164 +1,164 @@
-// using book_archive.Models;
-// using Microsoft.AspNetCore.Authorization;
-// using Microsoft.AspNetCore.Mvc;
-// using Microsoft.EntityFrameworkCore;
-//
-// namespace BookArchive.Controllers
-// {
-//     public class RolesController : Controller
-//     {
-//         private readonly DbContext _context;
-//
-//         public RolesController(DbContext context)
-//         {
-//             _context = context;
-//         }
-//
-// // GET: Roles
-//         [Authorize(Roles = "admin")]
-//         public async Task<IActionResult> Index()
-//         {
-//             // return View(await _context.Roles.ToListAsync());
-//         }
-//
-// // GET: Roles/Details/5
-//         [Authorize(Roles = "admin")]
-//         public async Task<IActionResult> Details(int? id)
-//         {
-//             // if (id == null || _context.Roles == null)
-//             // {
-//                 // return NotFound();
-//             // }
-//
-//             // var role = await _context.Roles
-//             //     .FirstOrDefaultAsync(m => m.Id == id);
-//             // if (role == null)
-//             // {
-//             //     return NotFound();
-//             // }
-//             //
-//             // return View(role);
-//         }
-//
-// // GET: Roles/Create
-//         [Authorize(Roles = "admin")]
-//         public IActionResult Create()
-//         {
-//             return View();
-//         }
-//
-// // POST: Roles/Create
-//         [HttpPost]
-//         [ValidateAntiForgeryToken]
-//         [Authorize(Roles = "admin")]
-//         public async Task<IActionResult> Create([Bind("Id,Name")] Role role)
-//         {
-//             if (ModelState.IsValid)
-//             {
-//                 _context.Add(role);
-//                 await _context.SaveChangesAsync();
-//                 return RedirectToAction(nameof(Index));
-//             }
-//
-//             return View(role);
-//         }
-//
-// // GET: Roles/Edit/5
-//         [Authorize(Roles = "admin")]
-//         public async Task<IActionResult> Edit(int? id)
-//         {
-//             // if (id == null || _context.Roles == null)
-//             // {
-//             //     return NotFound();
-//             // }
-//             //
-//             // var role = await _context.Roles.FindAsync(id);
-//             // if (role == null)
-//             // {
-//             //     return NotFound();
-//             // }
-//             //
-//             // return View(role);
-//         }
-//
-// // POST: Roles/Edit/5
-//         [HttpPost]
-//         [ValidateAntiForgeryToken]
-//         [Authorize(Roles = "admin")]
-//         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Role role)
-//         {
-//             if (id != role.Id)
-//             {
-//                 return NotFound();
-//             }
-//
-//             if (ModelState.IsValid)
-//             {
-//                 try
-//                 {
-//                     _context.Update(role);
-//                     await _context.SaveChangesAsync();
-//                 }
-//                 catch (DbUpdateConcurrencyException)
-//                 {
-//                     if (!RoleExists(role.Id))
-//                     {
-//                         return NotFound();
-//                     }
-//                     else
-//                     {
-//                         throw;
-//                     }
-//                 }
-//
-//                 return RedirectToAction(nameof(Index));
-//             }
-//
-//             return View(role);
-//         }
-//
-// // GET: Roles/Delete/5
-//         [Authorize(Roles = "admin")]
-//         public async Task<IActionResult> Delete(int? id)
-//         {
-//             // if (id == null || _context.Roles == null)
-//             // {
-//             //     return NotFound();
-//             // }
-//             //
-//             // var role = await _context.Roles
-//             //     .FirstOrDefaultAsync(m => m.Id == id);
-//             // if (role == null)
-//             // {
-//             //     return NotFound();
-//             // }
-//             //
-//             // return View(role);
-//         }
-//
-// // POST: Roles/Delete/5
-//         [HttpPost, ActionName("Delete")]
-//         [ValidateAntiForgeryToken]
-//         public async Task<IActionResult> DeleteConfirmed(int id)
-//         {
-//             // if (_context.Roles == null)
-//             // {
-//             //     return BadRequest("Entity set 'BookArchiveDbContext.Roles' is null.");
-//             // }
-//             //
-//             // var role = await _context.Roles.FindAsync(id);
-//             // if (role != null)
-//             // {
-//             //     _context.Roles.Remove(role);
-//             // }
-//             //
-//             // await _context.SaveChangesAsync();
-//             // return RedirectToAction(nameof(Index));
-//         }
-//
-//         private bool RoleExists(int id)
-//         {
-//             // return _context.Roles.Any(e => e.Id == id);
-//         }
-//     }
-// }
+using book_archive.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace BookArchive.Controllers
+{
+    public class RolesController : Controller
+    {
+        private readonly DataContext _context;
+
+        public RolesController(DataContext context)
+        {
+            _context = context;
+        }
+
+// GET: Roles
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Roles.ToListAsync());
+        }
+
+// GET: Roles/Details/5
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Roles == null)
+            {
+                return NotFound();
+            }
+
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            
+            return View(role);
+        }
+
+// GET: Roles/Create
+        [Authorize(Roles = "admin")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+// POST: Roles/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Create([Bind("Id,Name")] Role role)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(role);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(role);
+        }
+
+// GET: Roles/Edit/5
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Roles == null)
+            {
+                return NotFound();
+            }
+            
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            
+            return View(role);
+        }
+
+// POST: Roles/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Role role)
+        {
+            if (id != role.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(role);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RoleExists(role.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(role);
+        }
+
+// GET: Roles/Delete/5
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Roles == null)
+            {
+                return NotFound();
+            }
+            
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            
+            return View(role);
+        }
+
+// POST: Roles/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Roles == null)
+            {
+                return BadRequest("Entity set 'BookArchiveDataContext.Roles' is null.");
+            }
+            
+            var role = await _context.Roles.FindAsync(id);
+            if (role != null)
+            {
+                _context.Roles.Remove(role);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool RoleExists(int id)
+        {
+            return _context.Roles.Any(e => e.Id == id);
+        }
+    }
+}
