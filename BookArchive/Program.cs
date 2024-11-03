@@ -40,7 +40,7 @@ using (var scope = app.Services.CreateScope())
 
     if (!dbContext.Database.CanConnect())
     {
-        throw new Exception("Can't connect to database");
+        throw new NotImplementedException("Can't connect to database");
     }
 }
 
