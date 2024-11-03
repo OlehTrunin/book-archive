@@ -1,6 +1,6 @@
 using System.Diagnostics;
+using BookArchive.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using BookArchive.Models;
 
 namespace BookArchive.Controllers;
 

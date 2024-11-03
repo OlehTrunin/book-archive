@@ -1,4 +1,4 @@
-namespace BookArchive.Models;
+namespace BookArchive.ViewModels;
 
 public class ErrorViewModel
 {

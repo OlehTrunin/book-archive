@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using book_archive.Models;
-using book_archive.ViewModel;
+using BookArchive.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;

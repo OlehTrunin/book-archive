@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace book_archive.ViewModel
+namespace BookArchive.ViewModels
 {
     public class PaginatedItemsViewModel<TEntity> where TEntity : class
     {
