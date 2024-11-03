@@ -10,7 +10,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Server=(localdb)\\mssqllocaldb"));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"), 
+        new MySqlServerVersion(new Version(8, 0, 25)) // Use the correct version for your MySQL server
+    );
 });
 
 var app = builder.Build();
@@ -19,21 +22,17 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -41,7 +40,7 @@ using (var scope = app.Services.CreateScope())
 
     if (!dbContext.Database.CanConnect())
     {
-        throw new NotImplementedException("Can't connect to database");
+        throw new Exception("Can't connect to database");
     }
 }
 
