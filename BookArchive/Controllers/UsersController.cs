@@ -1,18 +1,16 @@
-using System.Threading.Tasks;
 using book_archive.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
-namespace book_archive.Controllers
+namespace BookArchive.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly BookArchiveDbContext _context;
+        private readonly DbContext _context;
 
-        public UsersController(BookArchiveDbContext context)
+        public UsersController(DbContext context)
         {
             _context = context;
         }

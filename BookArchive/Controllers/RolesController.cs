@@ -1,17 +1,15 @@
-using System.Threading.Tasks;
 using book_archive.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
-namespace book_archive.Controllers
+namespace BookArchive.Controllers
 {
     public class RolesController : Controller
     {
-        private readonly BookArchiveDbContext _context;
+        private readonly DbContext _context;
 
-        public RolesController(BookArchiveDbContext context)
+        public RolesController(DbContext context)
         {
             _context = context;
         }

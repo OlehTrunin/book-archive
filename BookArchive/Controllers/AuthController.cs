@@ -1,25 +1,20 @@
-using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using book_archive.Models;
 using book_archive.ViewModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace book_archive.Controllers
+namespace BookArchive.Controllers
 {
     public class AuthController : Controller
-    {
-        // TODO: import and use necessary packages to connect DB
-        private BookArchiveDbContext _db;
+    { 
+        private readonly DbContext _context;
 
-        public AuthController(BookArchiveDbContext context)
+        public AuthController(DbContext context)
         {
-            _db = context;
+            _context = context;
         }
 
         [HttpGet]
@@ -39,7 +34,7 @@ namespace book_archive.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _db.Users
+                User user = await _context.Users
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
@@ -66,15 +61,15 @@ namespace book_archive.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
                     user = new User { Email = model.Email, Password = model.Password };
-                    Role userRole = await _db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                    Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
                         user.Role = userRole;
-                    _db.Users.Add(user);
-                    await _db.SaveChangesAsync();
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
                     await Authenticate(user);
                     return RedirectToAction("Index", "Home");
                 }
