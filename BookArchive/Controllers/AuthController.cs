@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using book_archive.Models;
+using BookArchive.Models;
 using BookArchive.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -23,23 +23,21 @@ namespace BookArchive.Controllers
             return View();
         }
 
-        public string AccessDenied()
-        {
-            return "Недостатньо прав";
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users
+                // Find the user by email
+                var user = await _context.Users
                     .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if (user != null)
+                    .FirstOrDefaultAsync(u => u.Email == model.Email);
+
+                // Verify password (consider password hashing)
+                if (user != null && user.Password == model.Password) // Replace with hash comparison
                 {
-                    await Authenticate(user); // аутентификация
+                    await SignInUser(user); // Sign in user with claims
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -61,47 +59,59 @@ namespace BookArchive.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-                if (user == null)
+                // Check if user already exists
+                var existingUser = await _context.Users.AnyAsync(u => u.Email == model.Email);
+                if (existingUser)
                 {
-                    user = new User { Email = model.Email, Password = model.Password };
-                    Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
-                    if (userRole != null)
-                        user.Role = userRole;
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
-                    await Authenticate(user);
-                    return RedirectToAction("Index", "Home");
+                    ModelState.AddModelError("", "Цей email вже зареєстрований");
+                    return View(model);
                 }
-                else
-                    ModelState.AddModelError("", "Неправильні логін чи пароль");
+
+                // Create user and assign default "user" role
+                var userRole = await _context.Roles.SingleOrDefaultAsync(r => r.Name == "user") 
+                               ?? new Role { Name = "user" };
+
+                var user = new User 
+                { 
+                    Email = model.Email, 
+                    Password = model.Password, // Password should ideally be hashed
+                    Role = userRole
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                await SignInUser(user);
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
         }
 
-        private async Task Authenticate(User user)
+        private async Task SignInUser(User user)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
+            // Check for null user or null role
+            if (user == null || user.Role == null) 
+                throw new ArgumentNullException(nameof(user), "User or User Role cannot be null");
 
-            var claims = new List<Claim>();
-            if (!string.IsNullOrEmpty(user.Email))
+            var claims = new List<Claim>
             {
-                claims.Add(new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email));
-            }
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.Role.Name)
+            };
 
-            if (!string.IsNullOrEmpty(user.Role?.Name))
-            {
-                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name));
-            }
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(id));
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme, 
+                claimsPrincipal);
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return Content("Недостатньо прав");
         }
 
         public async Task<IActionResult> Logout()

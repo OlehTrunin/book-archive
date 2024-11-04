@@ -1,4 +1,4 @@
-using book_archive.Models;
+using BookArchive.Models;
 
 namespace BookArchive;
 

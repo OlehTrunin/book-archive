@@ -1,4 +1,4 @@
-namespace book_archive.Models
+namespace BookArchive.Models
 {
     public class Role
     {
