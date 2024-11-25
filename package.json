@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "css:build": "npx tailwindcss -i ./BookArchive/wwwroot/css/site.css -o ./BookArchive/wwwroot/css/styles.css --minify",
+    "watch": "npx tailwindcss -i ./BookArchive/wwwroot/css/site.css -o ./BookArchive/wwwroot/css/styles.css --minify --watch"
+  },
+  "name": "webapplication1",
+  "version": "1.0.0",
+  "main": "tailwind.config.js",
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
+}
