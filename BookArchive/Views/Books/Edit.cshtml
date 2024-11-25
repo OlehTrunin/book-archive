@@ -4,47 +4,44 @@
 ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1 class="text-3xl font-bold mb-4">Edit</h1>
 
-<h4>Book</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoverImage" class="control-label"></label>
-                <input asp-for="CoverImage" class="form-control" type="file" />
-                <span asp-validation-for="CoverImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BookFile" class="control-label"></label>
-                <input asp-for="BookFile" class="form-control" type="file" />
-                <span asp-validation-for="BookFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Edit" class="space-y-4">
+    <div class="flex flex-col space-y-2">
+        <label asp-for="Title" class="text-lg font-semibold"></label>
+        <input asp-for="Title" class="border border-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span asp-validation-for="Title" class="text-red-600"></span>
     </div>
-</div>
+
+    <div class="flex flex-col space-y-2">
+        <label asp-for="Description" class="text-lg font-semibold"></label>
+        <input asp-for="Description" class="border border-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span asp-validation-for="Description" class="text-red-600"></span>
+    </div>
+
+    <div class="flex flex-col space-y-2">
+        <label asp-for="CoverImage" class="text-lg font-semibold"></label>
+        <input asp-for="CoverImage" class="border border-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="file" />
+        <span asp-validation-for="CoverImage" class="text-red-600"></span>
+    </div>
+
+    <div class="flex flex-col space-y-2">
+        <label asp-for="BookFile" class="text-lg font-semibold"></label>
+        <input asp-for="BookFile" class="border border-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="file" />
+        <span asp-validation-for="BookFile" class="text-red-600"></span>
+    </div>
+
+    <div class="flex flex-col space-y-2">
+        <label asp-for="Year" class="text-lg font-semibold"></label>
+        <input asp-for="Year" class="border border-gray-400 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span asp-validation-for="Year" class="text-red-600"></span>
+    </div>
+
+    <div class="flex justify-end">
+        <input type="submit" value="Save" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" />
+    </div>
+</form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="text-blue-500 hover:text-blue-700 underline">Back to List</a>
 </div>

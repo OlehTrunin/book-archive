@@ -4,46 +4,41 @@
 ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Book</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoverImage" class="control-label"></label>
-                <input asp-for="CoverImage" class="form-control" type="file" accept="image/*" />
-                <span asp-validation-for="CoverImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BookFile" class="control-label"></label>
-                <input asp-for="BookFile" class="form-control" type="file" accept=".pdf,.epub,.docx" />
-                <span asp-validation-for="BookFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="max-w-md mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold mb-4">Create Book</h1>
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-red-500 text-sm"></div>
+        <div class="mb-4">
+            <label asp-for="Title" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="Title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="Title" class="text-red-500 text-sm"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Description" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="Description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="Description" class="text-red-500 text-sm"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="CoverImage" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="CoverImage" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" accept="image/*" />
+            <span asp-validation-for="CoverImage" class="text-red-500 text-sm"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="BookFile" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="BookFile" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" accept=".pdf,.epub,.docx" />
+            <span asp-validation-for="BookFile" class="text-red-500 text-sm"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Year" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="Year" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="Year" class="text-red-500 text-sm"></span>
+        </div>
+        <div class="flex justify-end">
+            <input type="submit" value="Create" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" />
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="max-w-md mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
+    <a asp-action="Index" class="text-blue-500 hover:text-blue-700">Back to List</a>
 </div>

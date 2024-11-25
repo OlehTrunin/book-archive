@@ -8,9 +8,14 @@ namespace BookArchive.Controllers
     public class BooksController(DataContext context) : Controller
     {
         // GET: Books
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await context.Books.ToListAsync());
+            var books = await context.Books
+                .Include(b => b.Ratings)
+                .ToListAsync();
+
+            return View(books);
         }
 
 // GET: Books/Details/5

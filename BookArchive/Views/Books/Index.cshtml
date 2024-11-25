@@ -1,39 +1,91 @@
 @model IEnumerable<BookArchive.Models.Book>
 
 @{
-ViewData["Title"] = "Books";
+    ViewData["Title"] = "Books";
 }
 
 <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Books</h1>
-            <a asp-action="Create" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4 sm:mb-0">Books</h1>
+            <a asp-action="Create" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                 Create New
             </a>
         </div>
 
+        <form asp-action="Index" method="get" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-8">
+            <div class="flex flex-wrap -mx-3 mb-4">
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="title">
+                        Title
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="title" name="title" type="text" placeholder="Search by title">
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="yearFrom">
+                        Year From
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="yearFrom" name="yearFrom" type="number" placeholder="From year">
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="yearTo">
+                        Year To
+                    </label>
+                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="yearTo" name="yearTo" type="number" placeholder="To year">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-4">
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="rating">
+                        Minimum Rating
+                    </label>
+                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="rating" name="rating">
+                        <option value="">All Ratings</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars & Up</option>
+                        <option value="3">3 Stars & Up</option>
+                        <option value="2">2 Stars & Up</option>
+                        <option value="1">1 Star & Up</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="sort">
+                        Sort By
+                    </label>
+                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="sort" name="sort">
+                        <option value="latest">Latest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="title">Title</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 flex items-end">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full" type="submit">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach (var item in Model)
             {
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <img src="@item.CoverImage" alt="Cover of @item.Title" class="w-full h-64 object-cover"/>
-                <div class="p-4">
-                    <h2 class="font-semibold text-lg mb-1 text-gray-900">@item.Title</h2>
-                    <p class="text-sm text-gray-600">Published: @item.Year</p>
-                    <div class="mt-4 flex gap-2">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-2 rounded text-sm">
-                            Edit
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded text-sm">
-                            Details
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-sm">
-                            Delete
-                        </a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow block">
+                    <img src="@item.CoverImage" alt="Cover of @item.Title" class="w-full h-64 object-cover"/>
+                    <div class="p-4">
+                        <h2 class="font-semibold text-lg mb-1 text-gray-900">@item.Title</h2>
+                        <p class="text-sm text-gray-600 mb-2">Published: @item.Year</p>
+                        @* <div class="flex items-center"> *@
+                        @*     @for (int i = 1; i <= 5; i++) *@
+                        @*     { *@
+                        @*         <svg class="w-5 h-5 @(i <= item.AverageRating ? "text-yellow-400" : "text-gray-300")" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"> *@
+                        @*             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path> *@
+                        @*         </svg> *@
+                        @*     } *@
+                        @*     <span class="ml-2 text-sm text-gray-600">(@item.AverageRating.ToString("F1"))</span> *@
+                        @* </div> *@
                     </div>
-                </div>
-            </div>
+                </a>
             }
         </div>
     </div>

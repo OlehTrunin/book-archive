@@ -9,10 +9,8 @@ public class Book
         Title = title;
     }
 
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
-    [Required]
     public string Title { get; set; }
 
     public string? Description { get; set; }
@@ -22,4 +20,6 @@ public class Book
     public byte[]? BookFile { get; set; }
 
     public int? Year { get; set; }
+
+    public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 }

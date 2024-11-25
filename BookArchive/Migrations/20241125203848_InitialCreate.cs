@@ -15,6 +15,26 @@ namespace BookArchive.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CoverImage = table.Column<byte[]>(type: "longblob", nullable: true),
+                    BookFile = table.Column<byte[]>(type: "longblob", nullable: true),
+                    Year = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -54,25 +74,43 @@ namespace BookArchive.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                    name: "Books",
-                    columns: table => new
-                    {
-                        Id = table.Column<int>(type: "int", nullable: false)
-                            .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                        Title = table.Column<string>(type: "longtext", nullable: true)
-                            .Annotation("MySql:CharSet", "utf8mb4"),
-                        Description = table.Column<string>(type: "longtext", nullable: true)
-                            .Annotation("MySql:CharSet", "utf8mb4"),
-                        CoverImage = table.Column<byte[]>(type: "longblob", nullable: true),
-                        BookFile = table.Column<byte[]>(type: "longblob", nullable: true),
-                        Year = table.Column<int>(type: "int", nullable: true)
-                    },
-                    constraints: table =>
-                    {
-                        table.PrimaryKey("PK_Books", x => x.Id);
-                    })
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RatingValue = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
-            
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_BookId",
+                table: "Ratings",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_UserId",
+                table: "Ratings",
+                column: "UserId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
@@ -87,13 +125,16 @@ namespace BookArchive.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Ratings");
+
+            migrationBuilder.DropTable(
+                name: "Books");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Roles");
-            
-            migrationBuilder.DropTable(
-                name: "Books");
         }
     }
 }
