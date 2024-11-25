@@ -38,6 +38,7 @@
                 <h2 class="text-2xl font-bold mb-4">Description</h2>
                 <p>@Model.Description</p>
             </div>
+            <button onclick="addFavorite(@Model.Id)">Add to Favorites</button>
             @* <div class="mb-8"> *@
             @*     <h2 class="text-2xl font-bold mb-4">Reviews</h2> *@
             @*     <div class="space-y-4"> *@
@@ -73,3 +74,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    function addFavorite(bookId) {
+        $.ajax({
+            type: "POST",
+            url: "/Favorite/" + bookId,
+            success: function (data) {
+                console.log("Book added to favorites");
+            }
+        });
+    }
+</script>

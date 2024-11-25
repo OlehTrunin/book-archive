@@ -22,4 +22,6 @@ public class Book
     public int? Year { get; set; }
 
     public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+    public DateTime CreatedAt { get; set; }
 }

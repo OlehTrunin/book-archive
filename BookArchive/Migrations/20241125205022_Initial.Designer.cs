@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookArchive.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241125203848_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241125205022_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace BookArchive.Migrations
                     b.Property<byte[]>("CoverImage")
                         .HasColumnType("longblob");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
@@ -52,6 +55,30 @@ namespace BookArchive.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BookArchive.Models.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("BookArchive.Models.Rating", b =>
@@ -74,8 +101,6 @@ namespace BookArchive.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Ratings");
                 });
@@ -123,23 +148,22 @@ namespace BookArchive.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BookArchive.Models.Favorite", b =>
+                {
+                    b.HasOne("BookArchive.Models.Book", null)
+                        .WithMany("Favorites")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BookArchive.Models.Rating", b =>
                 {
-                    b.HasOne("BookArchive.Models.Book", "Book")
+                    b.HasOne("BookArchive.Models.Book", null)
                         .WithMany("Ratings")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("BookArchive.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BookArchive.Models.User", b =>
@@ -155,6 +179,8 @@ namespace BookArchive.Migrations
 
             modelBuilder.Entity("BookArchive.Models.Book", b =>
                 {
+                    b.Navigation("Favorites");
+
                     b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
