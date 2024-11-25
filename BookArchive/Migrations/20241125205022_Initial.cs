@@ -133,6 +133,10 @@ namespace BookArchive.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+            
+            migrationBuilder.Sql("INSERT INTO Roles (Name) VALUES ('admin')", true);
+            migrationBuilder.Sql("SET @RoleId = LAST_INSERT_ID()", true);
+            migrationBuilder.Sql("INSERT INTO Users (Email, Password, RoleId) VALUES ('admin@admin.com', 'admin', @RoleId)", true);
         }
 
         /// <inheritdoc />
