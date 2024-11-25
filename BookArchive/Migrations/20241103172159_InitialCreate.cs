@@ -53,10 +53,34 @@ namespace BookArchive.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                    name: "Books",
+                    columns: table => new
+                    {
+                        Id = table.Column<int>(type: "int", nullable: false)
+                            .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        Title = table.Column<string>(type: "longtext", nullable: true)
+                            .Annotation("MySql:CharSet", "utf8mb4"),
+                        Description = table.Column<string>(type: "longtext", nullable: true)
+                            .Annotation("MySql:CharSet", "utf8mb4"),
+                        CoverImage = table.Column<byte[]>(type: "longblob", nullable: true),
+                        BookFile = table.Column<byte[]>(type: "longblob", nullable: true),
+                        Year = table.Column<int>(type: "int", nullable: true)
+                    },
+                    constraints: table =>
+                    {
+                        table.PrimaryKey("PK_Books", x => x.Id);
+                    })
+                .Annotation("MySql:CharSet", "utf8mb4");
+            
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+            
+            migrationBuilder.Sql("INSERT INTO Roles (Name) VALUES ('admin')", true);
+            migrationBuilder.Sql("SET @RoleId = LAST_INSERT_ID()", true);
+            migrationBuilder.Sql("INSERT INTO Users (Email, Password, RoleId) VALUES ('admin@admin.com', 'admin', @RoleId)", true);
         }
 
         /// <inheritdoc />
@@ -67,6 +91,9 @@ namespace BookArchive.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
+            
+            migrationBuilder.DropTable(
+                name: "Books");
         }
     }
 }
