@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BookArchive.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,12 @@ namespace BookArchive.Controllers
                 .Include(b => b.Ratings)
                 .ToListAsync();
 
+            var userRole = User.Identity != null && User.Identity.IsAuthenticated 
+                ? User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value 
+                : null;
+
+            ViewBag.UserRole = userRole;
+            
             return View(books);
         }
 

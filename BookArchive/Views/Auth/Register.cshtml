@@ -1,32 +1,31 @@
 @model BookArchive.ViewModels.RegisterModel
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2 class="text-center">Реєстрація</h2>
+<div class="container mx-auto px-4">
+    <div class="flex justify-center">
+        <div class="w-full md:w-1/2">
+            <h2 class="text-2xl font-bold text-center mb-6">Реєстрація</h2>
             <form asp-action="Register" asp-controller="Auth" asp-anti-forgery="true">
-                <div class="validation" asp-validation-summary="ModelOnly"></div>
-                <div class="form-group">
-                    <label asp-for="Email">Введіть електронну скриньку</label>
-                    <input type="text" asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="text-red-600" asp-validation-summary="ModelOnly"></div>
+                <div class="mb-4">
+                    <label asp-for="Email" class="block mb-2">Введіть електронну скриньку</label>
+                    <input type="text" asp-for="Email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Password">Введіть пароль</label>
-                    <input type="password" asp-for="Password" class="form-control" autocomplete="new-password" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="mb-4">
+                    <label asp-for="Password" class="block mb-2">Введіть пароль</label>
+                    <input type="password" asp-for="Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="ConfirmPassword">Повторіть пароль</label>
-              
-                    <input type="password" asp-for="ConfirmPassword" class="form-control" autocomplete="new-password"
-                    />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <div class="mb-4">
+                    <label asp-for="ConfirmPassword" class="block mb-2">Повторіть пароль</label>
+                    <input type="password" asp-for="ConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-red-600 text-sm"></span>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-dark btn-block">Реєстрація</button>
+                <div class="mb-4">
+                    <button type="submit" class="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">Реєстрація</button>
                 </div>
             </form>
-            <a asp-action="Login" asp-controller="Auth" class="d-block text-center mt-3">Авторизація</a>
+            <a asp-action="Login" asp-controller="Auth" class="block text-center mt-4 text-blue-600 hover:underline">Авторизація</a>
         </div>
     </div>
 </div>
+

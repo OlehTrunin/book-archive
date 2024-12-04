@@ -15,13 +15,13 @@
                 else
                 {
                     <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-                        <span class="text-gray-500 text-lg">No cover available</span>
+                        <span class="text-gray-500 text-lg">Немає картинки</span>
                     </div>
                 }
                 @if (Model.BookFile != null)
                 {
                     <a href="~/books/@Model.BookFile" class="mt-4 block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-                        Download Book
+                        Завантажити книжку
                     </a>
                 }
             </div>
@@ -30,15 +30,20 @@
             <h1 class="text-3xl md:text-4xl font-bold mb-4">@Model.Title</h1>
             <div class="mb-6">
                 <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                    Year: @Model.Year
+                    Рік видання: @Model.Year
                 </span>
                 <!-- Add more tags here for other metadata -->
             </div>
             <div class="prose max-w-none mb-8">
-                <h2 class="text-2xl font-bold mb-4">Description</h2>
+                <h2 class="text-2xl font-bold mb-4">Про книжку</h2>
                 <p>@Model.Description</p>
             </div>
-            <button onclick="addFavorite(@Model.Id)">Add to Favorites</button>
+            <button id="favoriteButton"
+                    onclick="toggleFavorite(@Model.Id)"
+                    class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Додати в улюблені
+            </button>
+
             @* <div class="mb-8"> *@
             @*     <h2 class="text-2xl font-bold mb-4">Reviews</h2> *@
             @*     <div class="space-y-4"> *@
@@ -75,14 +80,87 @@
     </div>
 </div>
 
+@section Scripts {
 <script>
+    let isFavorite = false;
+
+    // Check initial favorite status when page loads
+    $(document).ready(function() {
+        checkFavoriteStatus(@Model.Id);
+    });
+
+    function checkFavoriteStatus(bookId) {
+        $.get(`/api/favorites/check/${bookId}`, function(response) {
+            isFavorite = response.isFavorite;
+            updateFavoriteButton(bookId);
+        });
+    }
+
+    function updateFavoriteButton(bookId) {
+        const button = $('#favoriteButton');
+        if (isFavorite) {
+            button.html('Видалити з улюблених');
+            button.removeClass('bg-yellow-500 hover:bg-yellow-600')
+                .addClass('bg-red-500 hover:bg-red-600');
+        } else {
+            button.html('Додати в улюблені');
+            button.removeClass('bg-red-500 hover:bg-red-600')
+                .addClass('bg-yellow-500 hover:bg-yellow-600');
+        }
+    }
+
+    function toggleFavorite(bookId) {
+        if (isFavorite) {
+            removeFavorite(bookId);
+        } else {
+            addFavorite(bookId);
+        }
+    }
+
     function addFavorite(bookId) {
         $.ajax({
             type: "POST",
-            url: "/Favorite/" + bookId,
-            success: function (data) {
-                console.log("Book added to favorites");
+            url: `/api/favorites/add/${bookId}`,
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    isFavorite = true;
+                    updateFavoriteButton(bookId);
+                } else {
+                    alert("Не вдалося додати книгу до улюблених.");
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 401) {
+                    alert("Будь ласка, увійдіть в систему, щоб додати книгу до улюблених.");
+                } else {
+                    alert("Сталася помилка. Спробуйте ще раз.");
+                }
+            }
+        });
+    }
+
+    function removeFavorite(bookId) {
+        $.ajax({
+            type: "DELETE",
+            url: `/api/favorites/remove/${bookId}`,
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    isFavorite = false;
+                    updateFavoriteButton(bookId);
+                } else {
+                    alert("Не вдалося видалити книгу з улюблених.");
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 401) {
+                    alert("Будь ласка, увійдіть в систему, щоб керувати улюбленими.");
+                } else {
+                    alert("Сталася помилка. Спробуйте ще раз.");
+                }
             }
         });
     }
 </script>
+}
